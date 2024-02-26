@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import convertToBase64 from "./convertToBase64";
-export default function Work() {
+
+export default function AddMore() {
   const [title, setTitle] = useState("");
   const [cover, setCover] = useState();
   const [description, setDescription] = useState("");
@@ -30,7 +31,7 @@ export default function Work() {
         if (res.data.status) {
           console.log("Navigating to /profileView");
           // navigate("/profileView");
-          navigate("/QRGenerate");
+          navigate("/allProfiles");
         }
       })
       .catch((err) => {

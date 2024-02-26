@@ -1,11 +1,11 @@
-import { Profile, Work } from '../models/Profile.js';
+import { Profile, Work, QRCode } from '../models/Profile.js';
 import generateUniqueSessionId from '../helper/generateUniqueSessionId.js';
 import mongoose from 'mongoose';
 
 const createProfile = async (req, res) => {
   try {
    const {
-      username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo,
+      username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo,emailId,title, address
     } = req.body;
 
     console.log(req.cookies);
@@ -14,7 +14,7 @@ const createProfile = async (req, res) => {
     console.log(email);
 
     const newProfile = new Profile({
-      username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo, email
+      username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo, email,emailId,title, address
     });
 
    
@@ -33,23 +33,6 @@ const createProfile = async (req, res) => {
 };
 
 
-// const getProfile = async (req, res) => {
-//   console.log("getProfile function is called");
-//   try {
-//     const { email } = req.cookies;
-//     console.log("User's email from cookie:", email);
-//     const tasks = await Profile.findOne({ email: email }).sort({ createdAt: -1}).limit(1).exec();
-//     console.log("dashboard task : ", tasks);
-
-//     // const data = await Profile.findOne({ email: email }).exec();
-//     // res.status(200).send(data);
-
-//     res.status(200).json(tasks);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// };
-
 const getProfile = async (req, res) => {
   console.log("getProfile function is called");
   try {
@@ -61,7 +44,8 @@ const getProfile = async (req, res) => {
       const tasks = await Profile.findById(req.params.id).exec();
       console.log("Profile by id: ", tasks);
       res.status(200).json(tasks);
-    } else {
+    } 
+    else {
       // If no id parameter, fetch the latest profile based on the user's email
       const tasks = await Profile.findOne({ email: email }).sort({ createdAt: -1}).limit(1).exec();
       console.log("Latest profile: ", tasks);
@@ -131,36 +115,6 @@ const createWork = async (req, res) => {
 
 
 
-// const getWork = async (req, res) => {
-//   try {
-//     console.log('Received GET request to /product/getwork');
-   
-//     const { email } = req.cookies;
-
-//     if (req.params.id) {
-//       // If ID is provided in the URL, fetch a specific work
-//       const workId = req.params.id;
-//       console.log('Work ID:', req.params.id);
-//       const work = await Work.findById(workId);
-
-//       if (!work) {
-//         return res.status(404).json({ message: 'Work not found' });
-//       }
-
-//       return res.status(200).json(work);
-//     } else {
-//       const { sessionId } = req.session;
-//       console.log(sessionId);
-//       // If no ID is provided, fetch all works
-//       const data = await Work.find({ email: email, userId: userId}).sort({ createdAt: -1 }).exec();
-//       console.log("dashboard task : ", data);
-//       return res.status(200).json(data);
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// };
 
 const getWork = async (req, res) => {
   try {
@@ -200,7 +154,7 @@ const getWork = async (req, res) => {
 const updateProfile = async(req,res)=>{
   const {id} = req.params;
   const {
-    username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo,
+    username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo,emailId,title, address
   } = req.body;
 
   if(!mongoose.Types.ObjectId.isValid(id)){
@@ -211,13 +165,37 @@ const updateProfile = async(req,res)=>{
       _id:id
     },
     {
-      username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo
+      username,companyname,tagline,description,instagram,twitter,linkedin,website,mobile,whatsapp,banner,logo,emailId,title, address
     })
     res.json({ status: true, data: profile });
+
+    //  // Find and update the corresponding record in /qrcodes
+    //  const userId = req.params.id;
+    //  const qrcodeRecord = await QRCode.findOne({ userId });
+ 
+    //  if (qrcodeRecord) {
+    //    // Update qrcodeRecord fields based on req.body
+    //    qrcodeRecord.username = req.body.username;
+    //    qrcodeRecord.companyname = req.body.companyname;
+    //    qrcodeRecord.title = req.body.title;
+    //    qrcodeRecord.website = req.body.website;
+    //    qrcodeRecord.emailId = req.body.emailId;
+    //    qrcodeRecord.mobile = req.body.mobile;
+    //    qrcodeRecord.whatsapp= req.body.whatsapp;
+    //    qrcodeRecord.address= req.body.address;
+ 
+    //    await qrcodeRecord.save();
+    //  }
+ 
+    //  res.status(200).json({ status: true, message: 'Profile updated successfully' });
+
   } catch (e){
     res.status(404).json({error: e.message})
   }
 }
+
+
+
 
 // update works
 
@@ -273,7 +251,90 @@ const deleteWork = async(req,res)=>{
 }
 
 
-export { createProfile, getProfile ,getAllProfiles, createWork, getWork, updateProfile, deleteProfile , updateWork, deleteWork};
+//-------------------------------------QRcode---------------------------------------//
+
+// const QRCodes = async (req, res) => {
+//   try {
+//     const { imageData,username, companyname, title, mobile,whatsapp,address,website,emailId, userId} = req.body;
+//     const newQRCode = new QRCode({ imageData,username, companyname,title, mobile,whatsapp,address,website,emailId, userId});
+//     await newQRCode.save();
+//     res.status(201).json({ message: 'QR code saved successfully' });
+//   } catch (error) {
+//     console.error('Error saving QR code:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+const QRCodes = async (req, res, next) => {
+  const { userId } = req.body;
+  const { email } = req.cookies;
+  console.log(email);
+
+  try {
+    // Check if an entry exists for the user
+    let qrCodeEntry = await QRCode.findOne({ userId });
+
+    if (qrCodeEntry) {
+      // If an entry exists, update it with the new data
+      qrCodeEntry = await QRCode.findOneAndUpdate({ userId }, req.body, { new: true });
+    } else {
+      // If no entry exists, create a new one
+      qrCodeEntry = new QRCode({...req.body, email:email});
+      await qrCodeEntry.save();
+    }
+
+    // Send a response indicating success
+    res.status(201).json({ success: true, data: qrCodeEntry });
+  } catch (error) {
+    // Handle errors
+    console.error('Error updating QR code:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+};
+
+
+//get
+const getAllQRCodes = async (req, res) => {
+  try {
+      const allQRCodes = await QRCode.find();
+      res.status(200).json(allQRCodes);
+  } catch (error) {
+      console.error('Error retrieving QR codes:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
+
+//Delete all the data associated with email
+
+const deleteAllData = async (req, res) => {
+  try {
+    const { email } = req.cookies;
+
+    // Delete profile data
+    await Profile.deleteMany({ email });
+
+    // Delete work data
+    await Work.deleteMany({ email });
+
+    // Delete QR code data
+    await QRCode.deleteMany({ email });
+
+    res.status(200).json({ success: true, message: 'User data deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user data:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+};
+
+
+
+
+
+
+export { createProfile, getProfile ,getAllProfiles, createWork, getWork, updateProfile, deleteProfile , updateWork, deleteWork,QRCodes,getAllQRCodes,deleteAllData};
 
 
 

@@ -22,6 +22,7 @@ export default function ProfileCreation() {
   };
   
   const [username, setUsername] = useState("");
+  const [title, setTitle] = useState("");
   const [companyname, setCompanyname] = useState("");
   const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
@@ -35,6 +36,8 @@ export default function ProfileCreation() {
 
   const [mobile, setMobile] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [emailId, setMail] = useState("");
+  const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
 
@@ -43,6 +46,7 @@ export default function ProfileCreation() {
     axios
       .post("http://localhost:3000/product/profile", {
         username,
+        title,
         companyname,
         tagline,
         description,
@@ -54,6 +58,8 @@ export default function ProfileCreation() {
         website,
         mobile,
         whatsapp,
+        emailId,
+        address,
       }, { withCredentials: true })
       .then((res) => {
         console.log(res);
@@ -111,6 +117,12 @@ export default function ProfileCreation() {
                 type="text"
                 placeholder="Name"
                 onChange={(e) => setUsername(e.target.value)}
+              />
+               <label>Title</label>
+              <input
+                type="text"
+                placeholder="title"
+                onChange={(e) => setTitle(e.target.value)}
               />
 
               <label>Company name</label>
@@ -191,6 +203,19 @@ export default function ProfileCreation() {
                 placeholder="Whatsapp"
                 onChange={(e) => setWhatsapp(e.target.value)}
               />
+               <label>Email</label>
+              <input
+                type="text"
+                placeholder="Email"
+                onChange={(e) => setMail(e.target.value)}
+              />
+               <label>Address</label>
+              <input
+                type="text"
+                placeholder="Address"
+                onChange={(e) => setAddress(e.target.value)}
+              />
+
               <p>Go on and complete filling your works</p>
 
               <button type="submit">Save</button>

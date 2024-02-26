@@ -1,4 +1,7 @@
 /* Sign up */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .sign-up-container{
     display: flex;

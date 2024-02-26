@@ -5,6 +5,10 @@ const ProfileSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
+    title:{
+        type:String,
+        required: true,
+    },
     companyname:{
         type:String,
         required: true,
@@ -51,6 +55,14 @@ const ProfileSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
+    emailId:{
+        type:String,
+        required: true,
+    },
+    address:{
+        type:String,
+        required: true,
+    },
     email: {
         type:String,
         unique:true,
@@ -83,10 +95,56 @@ const workSchema = new mongoose.Schema({
     },
 },{ timestamps: true })
 
+const QRCodeSchema = new mongoose.Schema({
+    imageData: {
+      type: String,
+      required: true,
+    },
+    username:{
+        type: String,
+    },
+    companyname:{
+        type: String,
+    },
+    title:{
+        type: String,
+    },
+    address:{
+        type: String,
+    },
+    emailId:{
+        type: String,
+    },
+    mobile:{
+        type: String,
+    },
+    whatsapp:{
+        type: String,
+    },
+    website:{
+        type: String,
+    },
+    userId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Profile", // Reference to the Profile model
+        required: false,
+    },
+
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    email: {
+        type:String,
+        unique:true,
+    },
+  });
+
 const ProfileModel = mongoose.model("Profile", ProfileSchema)
 const WorkModel = mongoose.model("Work", workSchema)
+const QRModel = mongoose.model("QRCode", QRCodeSchema)
 
-export {ProfileModel as Profile, WorkModel as Work}
+export {ProfileModel as Profile, WorkModel as Work, QRModel as QRCode}
 
 
 

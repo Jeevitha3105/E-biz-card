@@ -3,11 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import convertToBase64 from './convertToBase64'
 import { useParams } from 'react-router-dom';
-
+import QRCode from 'qrcode.react';
 
 export default function EditProfile() {
+  const {id} = useParams();
+  const websiteURL = `http://localhost:5173/profileView/${id}`; 
+  
+
 
   const [username, setUsername] = useState("");
+  const [title, setTitle] = useState("");
   const [companyname, setCompanyname] = useState("");
   const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
@@ -21,8 +26,10 @@ export default function EditProfile() {
 
   const [mobile, setMobile] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [emailId, setMail] = useState("");
+  const [address, setAddress] = useState("");
  
-  const {id} = useParams();
+  // const {id} = useParams();
   const navigate = useNavigate();
 
 
@@ -49,6 +56,9 @@ export default function EditProfile() {
         setWebsite(res.data.website);
         setMobile(res.data.mobile);
         setWhatsapp(res.data.whatsapp);
+        setTitle(res.data.title);
+        setMail(res.data.emailId)
+        setAddress(res.data.address);
       
     })
     .catch((err) => {
@@ -56,37 +66,117 @@ export default function EditProfile() {
     });
 }, [id]);
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   axios
+  //     .patch(`http://localhost:3000/product/updateProfile/${id}`, {
+  //       username,
+  //       title,
+  //       companyname,
+  //       tagline,
+  //       description,
+  //       banner,
+  //       logo,
+  //       instagram,
+  //       twitter,
+  //       linkedin,
+  //       website,
+  //       mobile,
+  //       whatsapp,
+  //       emailId,
+  //       address,
+  //     }, { withCredentials: true })
+  //     .then((res) => {
+  //       console.log("response", res);
+  //       if (res.data.status) {
+  //         console.log("Navigating to /profileView");
+  //         navigate("/allProfiles");
+
+         
+  //       }
+  //       // else {
+  //       //   setError(res.data.message);
+  //       // }
+       
+  //       })
+     
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .patch(`http://localhost:3000/product/updateProfile/${id}`, {
-        username,
-        companyname,
-        tagline,
-        description,
-        banner,
-        logo,
-        instagram,
-        twitter,
-        linkedin,
-        website,
-        mobile,
-        whatsapp,
-      }, { withCredentials: true })
-      .then((res) => {
-        console.log("response", res);
-        if (res.data.status) {
-          console.log("Navigating to /profileView");
+  
+    try {
+      // Update profile data
+      const updateProfileResponse = await axios.patch(
+        `http://localhost:3000/product/updateProfile/${id}`,
+        {
+          username,
+          title,
+          companyname,
+          tagline,
+          description,
+          banner,
+          logo,
+          instagram,
+          twitter,
+          linkedin,
+          website,
+          mobile,
+          whatsapp,
+          emailId,
+          address,
+        },
+        { withCredentials: true }
+      );
+  
+      // Check if profile update was successful
+      if (updateProfileResponse.data.status) {
+        console.log("Profile updated successfully");
+
+        const imageData = document.getElementById("qrcode-id").toDataURL();
+  
+        // Update QR code data
+        const updateQRCodeResponse = await axios.post(
+          'http://localhost:3000/product/qrcodes',
+          {
+            imageData,
+            userId: id,
+            username,
+            companyname,
+            title,
+            address,
+            website,
+            emailId,
+            mobile,
+            whatsapp,
+          }
+        );
+  
+        // Check if QR code update was successful
+        if (updateQRCodeResponse.status === 201 && !updateQRCodeResponse.data.error) {
+          console.log('QR code, username, and companyname updated in /qrcodes');
+          console.log("Navigating to /allProfiles");
           navigate("/allProfiles");
+        } else {
+          console.log('Server responded with an error:', updateQRCodeResponse.data.message);
         }
-        // else {
-        //   setError(res.data.message);
-        // }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      } else {
+        console.log("Error updating profile:", updateProfileResponse.data.message);
+      }
+    } catch (error) {
+      console.error('Error updating profile and QR code details:', error);
+    }
   };
+
+  
+
+
+
   const onUploadBanner = async e =>{
     const base64= await convertToBase64(e.target.files[0]);
     setBanner(base64);
@@ -119,6 +209,13 @@ export default function EditProfile() {
                 placeholder="Name"
                 onChange={(e) => setUsername(e.target.value)}
                 value={username}
+              />
+               <label>title</label>
+              <input
+                type="text"
+                placeholder="Name"
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
               />
 
               <label>Company name</label>
@@ -207,6 +304,22 @@ export default function EditProfile() {
                 onChange={(e) => setWhatsapp(e.target.value)}
                 value={whatsapp}
               />
+               <label>Email</label>
+              <input
+                type="text"
+                placeholder="email"
+                onChange={(e) => setMail(e.target.value)}
+                value={emailId}
+              />
+               <label>Address</label>
+              <input
+                type="text"
+                placeholder="address"
+                onChange={(e) => setAddress(e.target.value)}
+                value={address}
+              />
+
+<QRCode id="qrcode-id" value={websiteURL} />
 
               <button type="submit">Save Changes</button>
             </form>
