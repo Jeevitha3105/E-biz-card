@@ -296,11 +296,12 @@ const QRCodes = async (req, res, next) => {
 //get
 const getAllQRCodes = async (req, res) => {
   try {
-      const allQRCodes = await QRCode.find();
-      res.status(200).json(allQRCodes);
+    const { email } = req.cookies; // Assuming you store the email in cookies during login
+    const allQRCodes = await QRCode.find({ email });
+    res.status(200).json(allQRCodes);
   } catch (error) {
-      console.error('Error retrieving QR codes:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error retrieving QR codes:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 

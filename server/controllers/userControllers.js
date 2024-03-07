@@ -49,6 +49,7 @@ const login = async(req,res)=>{
     }
     
     const token = jwt.sign({username: user.username}, process.env.KEY, {expiresIn: '1hr'})
+
     res.cookie('token',token, {httpOnly: true, maxAge: 360000})
     res.cookie("email", user.email, {httpOnly: true,secure: true});
 
@@ -121,7 +122,8 @@ const verifyUser = async (req,res,next)=>{
             return res.json({status:false, message:"no token"})
         }
         const decoded = await jwt.verify(token, process.env.KEY);
-        next();
+        // next();
+        return res.json({ status: true, message: 'user verified', username: decoded.username });
     } catch(err){
         return res.json(err)
     }

@@ -18,6 +18,7 @@ router.delete('/deleteProfile/:id', deleteProfile);
 router.delete('/deleteWork/:id', deleteWork)
 
 router.post('/qrcodes', QRCodes);
+router.patch('/qrcodes', QRCodes);
 router.get('/getAllQRCodes',  getAllQRCodes)
 
 router.delete('/deleteAllData/:email',deleteAllData)

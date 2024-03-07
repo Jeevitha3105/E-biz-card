@@ -1,12 +1,20 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-
+import Navbar from '../components/home/Navbar'
+import Home from '../components/home/Home'
+import Features from '../components/home/Features'
+import About from '../components/home/About'
+import HowItWorks from '../components/home/HowItWorks'
+import Footer from '../components/home/Footer'
 export default function Landing() {
   return (
-    <div style={{display:"flex",flexDirection:"row",justifyContent:"space-between", padding:"20px"}}>
-        <h1 className='text-red-700 font-bold underline'>E-biz card</h1>
-       <Link to='/signup'><button>Register</button> </Link> 
-    </div>
-
+    <div>
+    <Navbar />
+    <Home />
+    <Features />
+    <About />
+    <HowItWorks />
+    <Footer />
+</div>
+ 
   )
 }

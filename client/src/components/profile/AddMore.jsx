@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useParams} from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import convertToBase64 from "./convertToBase64";
+import Logo from "../../assets/Logo.png";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import { RiText } from "react-icons/ri";
+import { FiFileText } from "react-icons/fi";
+import { MdErrorOutline } from "react-icons/md";
+import { TiTick } from "react-icons/ti";
 
 export default function AddMore() {
   const [title, setTitle] = useState("");
@@ -9,7 +15,10 @@ export default function AddMore() {
   const [description, setDescription] = useState("");
   const [works, setWorks] = useState([]);
 
-  const {id} = useParams();
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
@@ -56,10 +65,13 @@ export default function AddMore() {
         if (res.data.status) {
           setWorks((prevWorks) => [...prevWorks, res.data.work]);
 
-          // Clear the form fields
-          setTitle("");
-          setCover("");
-          setDescription("");
+          setSuccessMessage("Saved successfully!");
+
+          setTimeout(() => {
+            setTitle("");
+            setCover("");
+            setDescription("");
+          }, 1000);
         }
       })
       .catch((err) => {
@@ -84,39 +96,144 @@ export default function AddMore() {
   const isInputExceededLimit = characterCount >= maxCharacters;
 
   return (
-    <div>
-      <button onClick={handleAdd}>ADD another</button>
-      <form onSubmit={handleSubmit}>
-        <label>Title</label>
-        <input
-          type="text"
-          placeholder="Name"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-        />
-        <label>Description</label>
-        <textarea
-          type="text"
-          placeholder="Name"
-          // onChange={(e) => setDescription(e.target.value)}
-          onChange={handleInputChange}
-          rows={10}
-          cols={50}
-          value={description}
-        />
-        {isInputExceededLimit && (
-          <p style={{ color: "red" }}>
-            Word limit exceeded! Maximum {maxCharacters} words allowed.
-          </p>
-        )}
+    <div className="hero">
+      <div className="md:px-6 px-4 max-w-screen-2xl mx-auto">
+        <div className="flex justify-center items-center bg-white py-10">
+          <div className="flex items-center space-x-4">
+            <a
+              href="/"
+              className="text-2xl font-semibold flex items-center justify-center space-x-3 text-primary"
+            >
+              <img
+                src={Logo}
+                alt="logo"
+                className="w-10 inline-block items-center"
+              />
+              <span className="text-secondary">QUIKCARD</span>
+            </a>
+          </div>
+        </div>
 
-        <label htmlFor="cover">Cover Image</label>
-        <img src={cover} />
-        <input type="file" onChange={onUpload} id="cover" name="cover" />
+        <div className="flex justify-center">
+          <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-[400px] h-auto border-2 rounded-2xl borderShadow p-10 flex items-center justify-center flex-col my-[1rem] gradientBg gap-5 box-shadow"
+          >
+            <div className="flex justify-end items-center w-[300px]">
+              <button
+                onClick={handleAdd}
+                className="w-[100px] h-[40px] rounded-lg bg-primary text-white hover:text-gray-400"
+              >
+                Save & Add
+              </button>
+            </div>
+            <fieldset
+              style={{
+                border: "1px solid #000",
+                padding: "2px",
+                width: "300px",
+                borderRadius: "7px",
+              }}
+            >
+              <legend className="text-lg">Title</legend>
 
-        <button type="submit">Save</button>
-      </form>
+              <div className="flex flex-row gap-2 justify-center items-center w-[300px]">
+                <RiText className="w-6 h-6 text-gray-700" />
+                <input
+                  type="text"
+                  onChange={(e) => setTitle(e.target.value)}
+                  value={title}
+                  className="bg-transparent w-[300px] border-none focus:outline-none"
+                />
+              </div>
+            </fieldset>
 
+            <fieldset
+              style={{
+                border: "1px solid #000",
+                padding: "2px",
+                width: "300px",
+                borderRadius: "7px",
+              }}
+            >
+              <legend>Description</legend>
+              <div className="flex flex-row gap-2  w-[300px]">
+                <FiFileText className="w-6 h-6 text-gray-700" />
+                <textarea
+                  type="text"
+                  // onChange={(e) => setDescription(e.target.value)}
+                  onChange={handleInputChange}
+                  rows={10}
+                  cols={50}
+                  value={description}
+                  className="bg-transparent w-[300px] border-none focus:outline-none"
+                />
+              </div>
+            </fieldset>
+            {isInputExceededLimit && (
+              <p className="text-lg text-red-700 text-center font-medium">
+                Word limit exceeded!
+                <br /> Maximum {maxCharacters} words allowed.
+              </p>
+            )}
+
+            <fieldset
+              style={{
+                border: "1px solid #000",
+                padding: "2px",
+                width: "300px",
+                borderRadius: "7px",
+              }}
+            >
+              <legend htmlFor="cover">Cover Image</legend>
+              <img src={cover} />
+              <input
+                type="file"
+                onChange={onUpload}
+                id="cover"
+                name="cover"
+                className="bg-transparent w-[300px] border-none focus:outline-none hidden"
+              />
+              <label
+                htmlFor="cover"
+                className="flex items-center justify-center my-5 cursor-pointer"
+              >
+                <FaCloudUploadAlt className="w-7 h-7 text-gray-700" />
+              </label>
+            </fieldset>
+
+            {error && (
+              <div className="pt-3 flex flex-row gap-2 items-center justify-center">
+                <MdErrorOutline className="w-7 h-7 text-red-700" />
+                <p className=" text-red-700 text-lg">{error}</p>
+              </div>
+            )}
+
+            {successMessage && (
+              <div className="pt-3 flex flex-row gap-2 items-center justify-center">
+                <TiTick className="w-7 h-7 text-green-700" />
+                <p className=" text-green-700 text-lg">{successMessage}</p>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-[100px] h-[40px] rounded-full bg-primary text-white hover:text-gray-400"
+            >
+              Save All
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div className="cube"></div>
+      <div className="cube"></div>
+      <div className="cube"></div>
+      <div className="cube"></div>
+      <div className="cube"></div>
+      <div className="cube"></div>
+      <div className="cube"></div>
+      <div className="cube"></div>
     </div>
   );
 }

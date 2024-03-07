@@ -86,7 +86,7 @@ const workSchema = new mongoose.Schema({
     },
     email: {
         type:String,
-        unique:true,
+        // unique:true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -138,6 +138,9 @@ const QRCodeSchema = new mongoose.Schema({
         type:String,
         unique:true,
     },
+    logo:{
+        type:String,
+    }
   });
 
 const ProfileModel = mongoose.model("Profile", ProfileSchema)

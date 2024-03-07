@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Signup from "./components/auth/Signup";
 import Login from "./components/auth/Login";
-import Dashboard from "./components/home/Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPassword from "./components/auth/ResetPassword";
 import Home from "./components/home/Home";
@@ -37,10 +37,8 @@ function App() {
         <Route path="/allProfiles" element={<AllProfiles />} />
         <Route path="/editProfile/:id" element={<EditProfile />} />
         <Route path="/editWorks/:id" element={<EditWorks />} />
-
         <Route path="/Qrcode/:id" element={<QRcode />} />
         <Route path="/profileView/:id" element={<Profile />}></Route>
-
         <Route path="/QRGenerate" element={<QRGenerate />}></Route>
         <Route path="/AddMore" element={<AddMore />}></Route>
       </Routes>
