@@ -20,7 +20,7 @@ app.use(morgan("dev"));
 // ));
 app.use(cors(
     {
-        origin:["https://e-biz-card-liart.vercel.app"],
+        origin:["https://e-biz-card-frontend.vercel.app"],
         credentials: true
     }
 ));
