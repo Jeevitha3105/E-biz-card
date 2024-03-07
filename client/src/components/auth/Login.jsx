@@ -38,7 +38,7 @@ export default function Login() {
     return;
   }
 
-    axios.post('http://localhost:3000/auth/login', 
+    axios.post('https://e-biz-card-frontend.vercel.app/auth/login', 
     {email,password})
     .then((res)=>{
       console.log(res)
