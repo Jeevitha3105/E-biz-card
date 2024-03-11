@@ -65,35 +65,37 @@ const ProfileSchema = new mongoose.Schema({
     },
     email: {
         type:String,
-        unique:true,
+        // unique:true,
     },
    
 },
 { timestamps: true } )
 
+
 const workSchema = new mongoose.Schema({
-    title:{
-        type:String,
+    title: {
+        type: String,
         required: true,
     },
-    description:{
-        type:String,
+    description: {
+        type: String,
         required: true,
     },
-    cover:{
-        type:String,
+    cover: {
+        type: String,
+        required: true,
+    },
+    profileId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Profile", // Reference to the Profile model
         required: true,
     },
     email: {
         type:String,
         // unique:true,
     },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Profile", // Reference to the Profile model
-        required: false,
-    },
-},{ timestamps: true })
+}, { timestamps: true });
+
 
 const QRCodeSchema = new mongoose.Schema({
     imageData: {
@@ -136,7 +138,7 @@ const QRCodeSchema = new mongoose.Schema({
     },
     email: {
         type:String,
-        unique:true,
+        // unique:true,
     },
     logo:{
         type:String,

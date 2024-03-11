@@ -24,7 +24,7 @@ export default function EditWorks() {
   useEffect(() => {
     // Fetch the existing profile data based on the URL parameter (match.params.id)
     axios
-      .get(`http://localhost:3000/product/getwork/${id}`, {
+      .get(`http://localhost:3000/product/getworks/${id}`, {
         withCredentials: true,
       })
       .then((res) => {

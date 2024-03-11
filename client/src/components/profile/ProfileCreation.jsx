@@ -73,11 +73,16 @@ export default function ProfileCreation() {
         console.log(res);
         if (res.data.status) {
           console.log("Navigating to...");
+
+          
           setSuccessMessage("Profile created successfully!");
 
+          const newProfileId = res.data._id;
+          console.log("New Profile ID:", newProfileId);
           setTimeout(() => {
-            navigate("/work");
+            navigate(`/work/${newProfileId}`);
           }, 1000);
+          
         } else {
           setError(res.data.message);
         }

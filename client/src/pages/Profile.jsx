@@ -137,7 +137,7 @@ export default function Profile() {
 
               <div className="p-5">
                 <h2 className="text-left pb-5 text-2xl font-bold">Works</h2>
-                <WorkComponent />
+                <WorkComponent profileId={profile._id} />
               </div>
             </div>
           </div>

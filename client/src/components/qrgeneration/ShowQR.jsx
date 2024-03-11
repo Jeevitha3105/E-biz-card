@@ -80,6 +80,7 @@ const ShowQR = () => {
   };
 
   const { email } = useParams();
+
   const handleDelete = async () => {
     console.log("User Email:", email); // Add this line to check userEmail
     try {
@@ -93,6 +94,7 @@ const ShowQR = () => {
       console.error("Error deleting user data:", error);
     }
   };
+
 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-20">

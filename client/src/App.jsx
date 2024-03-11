@@ -32,7 +32,7 @@ function App() {
         <Route path="/resetPassword/:token" element={<ResetPassword />}></Route>
         <Route path="/profileCreation" element={<ProfileCreation />}></Route>
         <Route path="/profileView" element={<Profile />}></Route>
-        <Route path="/work" element={<Work />} />
+        {/* <Route path="/work" element={<Work />} /> */}
         <Route path="/workDetails/:id" element={<WorkDetails />} />
         <Route path="/allProfiles" element={<AllProfiles />} />
         <Route path="/editProfile/:id" element={<EditProfile />} />
@@ -40,7 +40,10 @@ function App() {
         <Route path="/Qrcode/:id" element={<QRcode />} />
         <Route path="/profileView/:id" element={<Profile />}></Route>
         <Route path="/QRGenerate" element={<QRGenerate />}></Route>
-        <Route path="/AddMore" element={<AddMore />}></Route>
+        {/* <Route path="/AddMore" element={<AddMore />}></Route> */}
+
+        <Route path="/work/:id" element={<Work />} />
+        <Route path="/AddMore/:id" element={<AddMore />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -5,22 +5,45 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-export default function WorkComponent() {
+export default function WorkComponent({ profileId }) {
   const [works, setWorks] = useState([]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:3000/product/getwork",
+  //         { withCredentials: true }
+  //       );
+  //       setWorks(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching profile:", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/product/getwork",
-          { withCredentials: true }
-        );
-        setWorks(response.data);
+        if (profileId) {
+
+          console.log("Fetching works for Profile ID:", profileId);
+          // Fetch works based on the provided profileId
+          const response = await axios.get(
+            `http://localhost:3000/product/getwork/${profileId}`,
+            { withCredentials: true }
+          );
+          setWorks(response.data);
+        }
       } catch (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error fetching works:", error);
       }
     };
+
     fetchData();
-  }, []);
+  }, [profileId]);
+
+
 
   const sliderSettings = {
     dots: false,

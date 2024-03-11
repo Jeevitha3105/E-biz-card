@@ -32,6 +32,7 @@ export default function AddMore() {
           title,
           cover,
           description,
+          profileId: id,
         },
         { withCredentials: true }
       )
@@ -57,6 +58,7 @@ export default function AddMore() {
           title,
           cover,
           description,
+          profileId: id,
         },
         { withCredentials: true }
       )

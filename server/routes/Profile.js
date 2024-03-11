@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { createProfile, getProfile,getAllProfiles,createWork,getWork,updateProfile,deleteProfile, updateWork,deleteWork,QRCodes, getAllQRCodes,deleteAllData} from '../controllers/profileControllers.js';
+import { createProfile, getProfile,getAllProfiles,createWork,getWork,getWorkDetails,updateProfile,deleteProfile, updateWork,deleteWork,QRCodes, getAllQRCodes,deleteAllData} from '../controllers/profileControllers.js';
 
 router.post('/profile', createProfile);
 router.get('/getprofile', getProfile);
@@ -9,7 +9,10 @@ router.get('/getAllProfiles', getAllProfiles);
 
 router.post('/work', createWork);
 router.get('/getwork', getWork);
-router.get('/getwork/:id', getWork);
+// router.get('/getwork/:id', getWork);
+
+router.get('/getwork/:profileId', getWork);
+router.get("/getworks/:id", getWorkDetails);
 
 router.patch('/updateProfile/:id', updateProfile);
 router.patch('/updateWork/:id', updateWork);
@@ -22,6 +25,7 @@ router.patch('/qrcodes', QRCodes);
 router.get('/getAllQRCodes',  getAllQRCodes)
 
 router.delete('/deleteAllData/:email',deleteAllData)
+
 
 
 export { router as profileRouter };

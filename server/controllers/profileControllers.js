@@ -20,11 +20,13 @@ const createProfile = async (req, res) => {
    
     await newProfile.save();
 
+    const newProfileId = newProfile._id; 
+
     console.log("taskemailid : ", email);
     const tasks = await Profile.findOne({ email: email });
     console.log("dashboard task : ", tasks);
 
-    return res.json({status: true, message: "profile created"})
+    return res.json({status: true, message: "profile created",_id: newProfileId})
 
   } catch (error) {
     console.error(error);
@@ -60,6 +62,7 @@ const getProfile = async (req, res) => {
 
 
 // Route to get all profiles associated with a specific email
+
 const getAllProfiles= async (req, res) => {
   try {
     const { email } = req.cookies;
@@ -80,33 +83,94 @@ const getAllProfiles= async (req, res) => {
   }
 };
 
-
-
-const createWork = async (req, res) => {
+//  -------------------------create and get work (using email)--------------------------//
+// const createWork = async (req, res) => {
  
+//   try {
+
+//     const {
+//       title,description,cover,userId
+//     } = req.body;
+
+//     const { email} = req.cookies;
+
+//     const sessionId = generateUniqueSessionId(); 
+//     req.session.sessionId = sessionId;
+
+//     const newWork = new Work({
+//       title,description,cover,email,sessionId,userId
+//       });
+
+//     await newWork.save();
+
+//     console.log("taskemailid : ", email);
+//     const task = await Work.find({ email: email, sessionId:sessionId});
+//     console.log("dashboard task : ", task);
+
+//     return res.json({status: true, message: "profile created"})
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// };
+
+
+
+
+// const getWork = async (req, res) => {
+//   try {
+//     console.log('Received GET request to /product/getwork');
+
+//     const { email } = req.cookies;
+
+//     if (req.params.id) {
+//       // If ID is provided in the URL, fetch a specific work
+//       const workId = req.params.id;
+//       console.log('Work ID:', req.params.id);
+//       const work = await Work.findById(workId);
+
+//       if (!work) {
+//         return res.status(404).json({ message: 'Work not found' });
+//       }
+
+//       return res.status(200).json(work);
+//     } else {
+//       // If no ID is provided, fetch all works for the user's email
+//       const data = await Work.find({ email: email }).sort({ createdAt: -1 }).exec();
+//       console.log("dashboard task : ", data);
+//       return res.status(200).json(data);
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// };
+
+
+
+
+// -----------------------------------using profile id ---------------------------------//
+const createWork = async (req, res) => {
   try {
+    
+    console.log("Request Body: ", req.body);
+    const { title, description, cover, profileId } = req.body;
 
-    const {
-      title,description,cover,userId
-    } = req.body;
-
-    // const { userId } = req.session;
-    const { email} = req.cookies;
-
-    const sessionId = generateUniqueSessionId(); 
-    req.session.sessionId = sessionId;
+    const { email } = req.cookies;
+    console.log(email);
 
     const newWork = new Work({
-      title,description,cover,email,sessionId,userId
-      });
-
+      title,
+      description,
+      cover,
+      profileId, // Save work with reference to profileId
+      email,
+    });
+   
     await newWork.save();
 
-    console.log("taskemailid : ", email);
-    const task = await Work.find({ email: email, sessionId:sessionId});
-    console.log("dashboard task : ", task);
-
-    return res.json({status: true, message: "profile created"})
+    console.log("New work created for profileId: ", profileId);
+    return res.json({ status: true, message: "Work created successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -118,26 +182,21 @@ const createWork = async (req, res) => {
 
 const getWork = async (req, res) => {
   try {
-    console.log('Received GET request to /product/getwork');
+    if (req.params.profileId) {
+      // Fetch works by profileId
+      const profileId = req.params.profileId;
+      console.log('Fetching works for Profile ID:', profileId);
+      const works = await Work.find({ profileId: profileId }).sort({ createdAt: -1 }).exec();
 
-    const { email } = req.cookies;
-
-    if (req.params.id) {
-      // If ID is provided in the URL, fetch a specific work
-      const workId = req.params.id;
-      console.log('Work ID:', req.params.id);
-      const work = await Work.findById(workId);
-
-      if (!work) {
-        return res.status(404).json({ message: 'Work not found' });
+      if (!works.length) {
+        return res.status(404).json({ message: 'Works not found for this profile' });
       }
 
-      return res.status(200).json(work);
+      return res.status(200).json(works);
     } else {
-      // If no ID is provided, fetch all works for the user's email
-      const data = await Work.find({ email: email }).sort({ createdAt: -1 }).exec();
-      console.log("dashboard task : ", data);
-      return res.status(200).json(data);
+      // If no profileId is provided, this path should probably be adjusted or removed
+      // as it doesn't align with the new structure
+      return res.status(400).json({ message: 'Profile ID is required' });
     }
   } catch (err) {
     console.error(err);
@@ -146,7 +205,21 @@ const getWork = async (req, res) => {
 };
 
 
+const getWorkDetails = async (req, res) => {
+  try {
+    const workId = req.params.id;
+    const work = await Work.findById(workId);
 
+    if (!work) {
+      return res.status(404).json({ message: 'Work not found' });
+    }
+
+    return res.status(200).json(work);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 
 // ------------------------------------Update profile------------------------------------------------------//
@@ -334,8 +407,7 @@ const deleteAllData = async (req, res) => {
 
 
 
-
-export { createProfile, getProfile ,getAllProfiles, createWork, getWork, updateProfile, deleteProfile , updateWork, deleteWork,QRCodes,getAllQRCodes,deleteAllData};
+export { createProfile, getProfile ,getAllProfiles, createWork, getWork, getWorkDetails, updateProfile, deleteProfile , updateWork, deleteWork,QRCodes,getAllQRCodes,deleteAllData};
 
 
 

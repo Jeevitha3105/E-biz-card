@@ -22,8 +22,11 @@ export default function Work() {
 
   const navigate = useNavigate();
 
+  console.log("Profile ID:", id);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    
 
     axios
       .post(
@@ -32,6 +35,7 @@ export default function Work() {
           title,
           cover,
           description,
+          profileId: id,
         },
         { withCredentials: true }
       )
@@ -66,6 +70,7 @@ export default function Work() {
           title,
           cover,
           description,
+          profileId: id,
         },
         { withCredentials: true }
       )
