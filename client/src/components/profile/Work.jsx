@@ -30,7 +30,7 @@ export default function Work() {
 
     axios
       .post(
-        "http://localhost:3000/product/work",
+        "https://e-biz-card-phi.vercel.app/product/work",
         {
           title,
           cover,
@@ -65,7 +65,7 @@ export default function Work() {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:3000/product/work",
+        "https://e-biz-card-phi.vercel.app/product/work",
         {
           title,
           cover,

@@ -24,7 +24,7 @@ import { TiTick } from "react-icons/ti";
 
 export default function EditProfile() {
   const { id } = useParams();
-  const websiteURL = `http://localhost:5173/profileView/${id}`;
+  const websiteURL = `https://e-biz-card-phi.vercel.app/profileView/${id}`;
 
   const [username, setUsername] = useState("");
   const [title, setTitle] = useState("");
@@ -53,7 +53,7 @@ export default function EditProfile() {
   useEffect(() => {
     console.log("useEffect is running");
     axios
-      .get(`http://localhost:3000/product/getProfile/${id}`, {
+      .get(`https://e-biz-card-phi.vercel.app/product/getProfile/${id}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -87,7 +87,7 @@ export default function EditProfile() {
     try {
       // Update profile data
       const updateProfileResponse = await axios.patch(
-        `http://localhost:3000/product/updateProfile/${id}`,
+        `https://e-biz-card-phi.vercel.app/product/updateProfile/${id}`,
         {
           username,
           title,
@@ -116,7 +116,7 @@ export default function EditProfile() {
 
         // Update QR code data
         const updateQRCodeResponse = await axios.patch(
-          "http://localhost:3000/product/qrcodes",
+          "https://e-biz-card-phi.vercel.app/product/qrcodes",
           {
             imageData,
             userId: id,

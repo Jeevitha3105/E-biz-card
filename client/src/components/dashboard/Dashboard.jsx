@@ -17,12 +17,12 @@ export default function Dashboard() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/auth/verify', { withCredentials: true })
+    axios.get('https://e-biz-card-phi.vercel.app/auth/verify', { withCredentials: true })
       .then(res => {
         console.log('Verification response:', res.data);
         if (res.data.status) {
           setUsername(res.data.username); // Extract and set the username
-          axios.get('http://localhost:3000/product/getAllQRCodes')
+          axios.get('https://e-biz-card-phi.vercel.app/product/getAllQRCodes')
             .then(qrData => {
               setShowQRData(qrData.data);
             })
@@ -40,7 +40,7 @@ export default function Dashboard() {
   }, [navigate]);
 
   const handleLogout = () => {
-    axios.get('http://localhost:3000/auth/logout')
+    axios.get('https://e-biz-card-phi.vercel.app/auth/logout')
       .then(res => {
         if (res.data.status) {
           navigate('/');

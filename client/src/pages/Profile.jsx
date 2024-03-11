@@ -22,13 +22,13 @@ export default function Profile() {
         if (id) {
           // If id is present in the URL, fetch profile by id
           response = await axios.get(
-            `http://localhost:3000/product/getprofile/${id}`,
+            `https://e-biz-card-phi.vercel.app/product/getprofile/${id}`,
             { withCredentials: true }
           );
         } else {
           // If id is not present, fetch the latest profile based on user's email
           response = await axios.get(
-            "http://localhost:3000/product/getprofile",
+            "https://e-biz-card-phi.vercel.app/product/getprofile",
             { withCredentials: true }
           );
         }

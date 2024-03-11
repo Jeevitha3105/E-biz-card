@@ -27,7 +27,7 @@ export default function AddMore() {
 
     axios
       .post(
-        "http://localhost:3000/product/work",
+        "https://e-biz-card-phi.vercel.app/product/work",
         {
           title,
           cover,
@@ -53,7 +53,7 @@ export default function AddMore() {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:3000/product/work",
+        "https://e-biz-card-phi.vercel.app/product/work",
         {
           title,
           cover,

@@ -24,7 +24,7 @@ export default function EditWorks() {
   useEffect(() => {
     // Fetch the existing profile data based on the URL parameter (match.params.id)
     axios
-      .get(`http://localhost:3000/product/getworks/${id}`, {
+      .get(`https://e-biz-card-phi.vercel.app/product/getworks/${id}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -44,7 +44,7 @@ export default function EditWorks() {
 
     axios
       .patch(
-        `http://localhost:3000/product/updateWork/${id}`,
+        `https://e-biz-card-phi.vercel.app/product/updateWork/${id}`,
         {
           title,
           cover,

@@ -39,7 +39,7 @@ export default function AllProfile() {
   // ---------------delete-------------------//
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3000/product/deleteProfile/${id}`)
+      .delete(`https://e-biz-card-phi.vercel.app/product/deleteProfile/${id}`)
       .then((res) => {
         console.log(res);
         window.location.reload();
@@ -69,7 +69,7 @@ export default function AllProfile() {
   // ---------------delete-------------------//
   const handleDeleteWork = (id) => {
     axios
-      .delete(`http://localhost:3000/product/deleteWork/${id}`)
+      .delete(`https://e-biz-card-phi.vercel.app/product/deleteWork/${id}`)
       .then((res) => {
         console.log(res);
         window.location.reload();
@@ -86,13 +86,13 @@ export default function AllProfile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/product/getAllProfiles", { withCredentials: true });
+        const response = await axios.get("https://e-biz-card-phi.vercel.app/product/getAllProfiles", { withCredentials: true });
         // Assuming the response data is an array of profiles
         const fetchedProfiles = response.data;
 
         // For each profile, fetch its works
         for (let profile of fetchedProfiles) {
-          const worksResponse = await axios.get(`http://localhost:3000/product/getwork/${profile._id}`, { withCredentials: true });
+          const worksResponse = await axios.get(`https://e-biz-card-phi.vercel.app/product/getwork/${profile._id}`, { withCredentials: true });
           profile.works = worksResponse.data; // Add a 'works' property to each profile
         }
 

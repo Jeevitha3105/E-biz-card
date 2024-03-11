@@ -25,7 +25,7 @@ export default function ResetPassword() {
     }
 
     axios
-      .post(`http://localhost:3000/auth/resetPassword/${token}`, { password })
+      .post(`https://e-biz-card-phi.vercel.app/auth/resetPassword/${token}`, { password })
       .then((res) => {
         console.log(res);
         if (res.data.status) {

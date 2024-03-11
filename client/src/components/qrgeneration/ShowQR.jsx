@@ -20,7 +20,7 @@ const ShowQR = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/product/getAllQRCodes"
+          "https://e-biz-card-phi.vercel.app/product/getAllQRCodes"
         );
         setQRCodes(response.data);
       } catch (error) {
@@ -85,7 +85,7 @@ const ShowQR = () => {
     console.log("User Email:", email); // Add this line to check userEmail
     try {
       await axios.delete(
-        `http://localhost:3000/product/deleteAllData/${email}`
+        `https://e-biz-card-phi.vercel.app/product/deleteAllData/${email}`
       );
       console.log("User data deleted successfully");
       window.location.reload();

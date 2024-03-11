@@ -19,7 +19,7 @@ export default function ResetPassword() {
     }
 
     axios
-      .post("http://localhost:3000/auth/forgotPassword", { email })
+      .post("https://e-biz-card-phi.vercel.app/auth/forgotPassword", { email })
       .then((res) => {
         console.log(res);
         if (res.data.status) {

@@ -45,7 +45,7 @@ export default function Signup() {
   }
 
     axios
-      .post("http://localhost:3000/auth/signup", { username, email, password })
+      .post("https://e-biz-card-phi.vercel.app/auth/signup", { username, email, password })
       .then((res) => {
         console.log(res);
         if (res.data.status) {

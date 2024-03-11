@@ -11,7 +11,7 @@ export default function QRGenerate() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/product/getprofile",
+          "https://e-biz-card-phi.vercel.app/product/getprofile",
           { withCredentials: true }
         );
         setProfile(response.data);
