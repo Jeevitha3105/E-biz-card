@@ -49,7 +49,7 @@ export default function ProfileCreation() {
 
     axios
       .post(
-        "https://e-biz-card-phi.vercel.app/product/profile",
+        "http://localhost:3000/product/profile",
         {
           username,
           title,

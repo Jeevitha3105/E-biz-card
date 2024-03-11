@@ -23,7 +23,7 @@ const SaveQR = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://e-biz-card-phi.vercel.app/product/getprofile",
+          "http://localhost:3000/product/getprofile",
           { withCredentials: true }
         );
         setProfile(response.data);
@@ -35,13 +35,13 @@ const SaveQR = () => {
     fetchData();
   }, []);
 
-  const websiteURL = `https://e-biz-card-phi.vercel.app/profileView/${profile._id}`;
+  const websiteURL = `http://localhost:3000/profileView/${profile._id}`;
 
   const handleQRCodeSave = async () => {
     try {
       const imageData = document.getElementById("qrcode-id").toDataURL();
       const response = await axios.post(
-        "https://e-biz-card-phi.vercel.app/product/qrcodes",
+        "http://localhost:3000/product/qrcodes",
         {
           imageData,
           userId: profile._id,

@@ -30,7 +30,7 @@ export default function WorkComponent({ profileId }) {
           console.log("Fetching works for Profile ID:", profileId);
           // Fetch works based on the provided profileId
           const response = await axios.get(
-            `https://e-biz-card-phi.vercel.app/product/getwork/${profileId}`,
+            `http://localhost:3000/product/getwork/${profileId}`,
             { withCredentials: true }
           );
           setWorks(response.data);
